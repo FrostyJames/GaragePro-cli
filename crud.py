@@ -99,5 +99,14 @@ def delete_vehicle_by_id(vehicle_id):
         session.commit()
         return True
     return False
+def delete_service_by_id(service_id):
+    session = SessionLocal()
+    service = session.get(ServiceRecord, service_id)
+    if service:
+        session.delete(service)
+        session.commit()
+        return True
+    return False
+
 
 
