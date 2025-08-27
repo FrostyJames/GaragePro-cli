@@ -91,5 +91,13 @@ def delete_customer_by_id(customer_id):
         session.commit()
         return True
     return False
+def delete_vehicle_by_id(vehicle_id):
+    session = SessionLocal()
+    vehicle = session.get(Vehicle, vehicle_id)
+    if vehicle:
+        session.delete(vehicle)
+        session.commit()
+        return True
+    return False
 
 
