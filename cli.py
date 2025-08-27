@@ -1,10 +1,16 @@
 import click
-from crud import create_customer
+from crud import (
+    create_customer, create_vehicle, log_service,
+    view_service_history,
+    update_customer, update_vehicle, update_service,
+    delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id)
 
 @click.group()
 def cli():
     """GaragePro CLI - Manage customers, vehicles, and service records."""
     pass
+
+
 
 @cli.command()
 @click.option('--name', prompt='Customer name')
@@ -15,8 +21,6 @@ def add_customer(name, phone, email, address):
     customer = create_customer(name, phone, email, address)
     click.secho(f"✅ Added customer: {customer.name}", fg="green")
 
-from crud import create_vehicle
-
 @cli.command()
 @click.option('--make', prompt='Vehicle make')
 @click.option('--model', prompt='Vehicle model')
@@ -26,9 +30,7 @@ def add_vehicle(make, model, year, customer_id):
     vehicle = create_vehicle(make, model, year, customer_id)
     click.secho(f"🚗 Added vehicle: {vehicle.make} {vehicle.model} ({vehicle.year})", fg="green")
 
-from crud import log_service
-
-@cli.command()
+@cli.command(name="log-service")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 @click.option('--service-type', prompt='Service type')
 @click.option('--notes', prompt='Service notes')
@@ -38,9 +40,8 @@ def log_service_cmd(vehicle_id, service_type, notes, cost, date):
     service = log_service(service_type, notes, cost, vehicle_id, date)
     click.secho(f"🛠️ Logged service: {service.service_type} on {service.date}", fg="green")
 
-from crud import view_service_history
 
-@cli.command()
+@cli.command(name="view-history")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 def view_history(vehicle_id):
     records = view_service_history(vehicle_id)
@@ -50,9 +51,9 @@ def view_history(vehicle_id):
     for r in records:
         click.echo(f"{r.date} - {r.service_type} - KES {r.cost} - {r.notes}")
 
-from crud import update_customer, update_vehicle, update_service
 
-@cli.command()
+
+@cli.command(name="update-customer")
 @click.option('--customer-id', prompt='Customer ID', type=int)
 @click.option('--name', default=None)
 @click.option('--phone', default=None)
@@ -64,7 +65,8 @@ def update_customer_cmd(customer_id, name, phone, email, address):
         click.secho("✅ Customer updated.", fg="green")
     else:
         click.secho("❌ Customer not found.", fg="red")
-@cli.command()
+
+@cli.command(name="update-vehicle")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 @click.option('--make', default=None)
 @click.option('--model', default=None)
@@ -76,7 +78,7 @@ def update_vehicle_cmd(vehicle_id, make, model, year):
     else:
         click.secho("❌ Vehicle not found.", fg="red")
 
-@cli.command()
+@cli.command(name="update-service")
 @click.option('--service-id', prompt='Service ID', type=int)
 @click.option('--type', default=None)
 @click.option('--notes', default=None)
@@ -89,9 +91,7 @@ def update_service_cmd(service_id, type, notes, cost, date):
     else:
         click.secho("❌ Service record not found.", fg="red")
 
-from crud import delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id
-
-@cli.command()
+@cli.command(name="delete-customer")
 @click.option('--customer-id', prompt='Customer ID', type=int)
 def delete_customer(customer_id):
     if delete_customer_by_id(customer_id):
@@ -99,7 +99,7 @@ def delete_customer(customer_id):
     else:
         click.secho("❌ Customer not found.", fg="red")
 
-@cli.command()
+@cli.command(name="delete-vehicle")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 def delete_vehicle(vehicle_id):
     if delete_vehicle_by_id(vehicle_id):
@@ -107,14 +107,10 @@ def delete_vehicle(vehicle_id):
     else:
         click.secho("❌ Vehicle not found.", fg="red")
 
-@cli.command()
+@cli.command(name="delete-service")
 @click.option('--service-id', prompt='Service ID', type=int)
 def delete_service(service_id):
     if delete_service_by_id(service_id):
         click.secho("🗑️ Service record deleted.", fg="green")
     else:
         click.secho("❌ Service record not found.", fg="red")
-
-
-
-
