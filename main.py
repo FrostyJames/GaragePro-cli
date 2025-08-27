@@ -1,12 +1,12 @@
 from crud import (
     create_customer, update_customer, delete_customer,
     create_vehicle, update_vehicle, delete_vehicle,
-    log_service, view_all_data
+    log_service, view_all_data, search_vehicles
 )
 
 def main_menu():
     while True:
-        print("\n GaragePro CLI Main Menu")
+        print("\n GaragePro: Main Menu")
         print("1. View All Records")
         print("2. Customer Management")
         print("3. Vehicle Management")
@@ -24,10 +24,10 @@ def main_menu():
         elif choice == "4":
             service_menu()
         elif choice == "5":
-            print("👋 Goodbye!")
+            print(" Goodbye! Thank you for using GaragePro.")
             break
         else:
-            print("Invalid option. Please try again.")
+            print(" Invalid option. Please try again.")
 
 def customer_menu():
     while True:
@@ -52,11 +52,11 @@ def customer_menu():
             email = input("New email: ") or None
             address = input("New address: ") or None
             update_customer(cid, name, phone, email, address)
-            print("Customer updated.")
+            print(" Customer updated.")
         elif choice == "3":
             cid = int(input("Customer ID to delete: "))
             delete_customer(cid)
-            print("Customer deleted.")
+            print(" Customer deleted.")
         elif choice == "4":
             break
 
@@ -66,7 +66,8 @@ def vehicle_menu():
         print("1. Add Vehicle")
         print("2. Update Vehicle")
         print("3. Delete Vehicle")
-        print("4. Back")
+        print("4. Search Vehicles")
+        print("5. Back")
 
         choice = input("Choose: ")
         if choice == "1":
@@ -75,7 +76,7 @@ def vehicle_menu():
             year = int(input("Year: "))
             customer_id = int(input("Customer ID: "))
             create_vehicle(make, model, year, customer_id)
-            print("Vehicle added.")
+            print(" Vehicle added.")
         elif choice == "2":
             vid = int(input("Vehicle ID: "))
             make = input("New make: ") or None
@@ -83,12 +84,25 @@ def vehicle_menu():
             year = input("New year: ")
             year = int(year) if year else None
             update_vehicle(vid, make, model, year)
-            print("Vehicle updated.")
+            print(" Vehicle updated.")
         elif choice == "3":
             vid = int(input("Vehicle ID to delete: "))
             delete_vehicle(vid)
-            print("Vehicle deleted.")
+            print(" Vehicle deleted.")
         elif choice == "4":
+            make = input("Search by make (leave blank to skip): ") or None
+            model = input("Search by model (leave blank to skip): ") or None
+            year_input = input("Search by year (leave blank to skip): ")
+            year = int(year_input) if year_input else None
+
+            vehicles = search_vehicles(make, model, year)
+            if not vehicles:
+                print(" No matching vehicles found.")
+            else:
+                print("\n Matching Vehicles:")
+                for v in vehicles:
+                    print(f"- ID: {v.id} | {v.make} {v.model} ({v.year}) | Owner ID: {v.customer_id}")
+        elif choice == "5":
             break
 
 def service_menu():
