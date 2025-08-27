@@ -107,5 +107,14 @@ def delete_vehicle(vehicle_id):
     else:
         click.secho("❌ Vehicle not found.", fg="red")
 
+@cli.command()
+@click.option('--service-id', prompt='Service ID', type=int)
+def delete_service(service_id):
+    if delete_service_by_id(service_id):
+        click.secho("🗑️ Service record deleted.", fg="green")
+    else:
+        click.secho("❌ Service record not found.", fg="red")
+
+
 
 
