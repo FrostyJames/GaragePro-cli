@@ -129,7 +129,7 @@ def view_all_data():
     session = SessionLocal()
     customers = session.query(Customer).all()
     for c in customers:
-        print(f"\n👤 {c.name} (ID: {c.id})")
+        print(f"\n {c.name} (ID: {c.id})")
         for v in c.vehicles:
             print(f" {v.make} {v.model} ({v.year}) - Vehicle ID: {v.id}")
             for s in v.services:
