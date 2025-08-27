@@ -44,7 +44,7 @@ def customer_menu():
             email = input("Email: ")
             address = input("Address: ")
             create_customer(name, phone, email, address)
-            print("✅ Customer added.")
+            print(" Customer added.")
         elif choice == "2":
             cid = int(input("Customer ID: "))
             name = input("New name: ") or None
@@ -52,17 +52,17 @@ def customer_menu():
             email = input("New email: ") or None
             address = input("New address: ") or None
             update_customer(cid, name, phone, email, address)
-            print("✅ Customer updated.")
+            print("Customer updated.")
         elif choice == "3":
             cid = int(input("Customer ID to delete: "))
             delete_customer(cid)
-            print("🗑️ Customer deleted.")
+            print("Customer deleted.")
         elif choice == "4":
             break
 
 def vehicle_menu():
     while True:
-        print("\n🚘 Vehicle Management")
+        print("\nVehicle Management")
         print("1. Add Vehicle")
         print("2. Update Vehicle")
         print("3. Delete Vehicle")
@@ -75,7 +75,7 @@ def vehicle_menu():
             year = int(input("Year: "))
             customer_id = int(input("Customer ID: "))
             create_vehicle(make, model, year, customer_id)
-            print("✅ Vehicle added.")
+            print(" Vehicle added.")
         elif choice == "2":
             vid = int(input("Vehicle ID: "))
             make = input("New make: ") or None
@@ -83,17 +83,17 @@ def vehicle_menu():
             year = input("New year: ")
             year = int(year) if year else None
             update_vehicle(vid, make, model, year)
-            print("✅ Vehicle updated.")
+            print(" Vehicle updated.")
         elif choice == "3":
             vid = int(input("Vehicle ID to delete: "))
             delete_vehicle(vid)
-            print("🗑️ Vehicle deleted.")
+            print(" Vehicle deleted.")
         elif choice == "4":
             break
 
 def service_menu():
     while True:
-        print("\n🛠️ Service Records")
+        print("\n Service Records")
         print("1. Log Service")
         print("2. Back")
 
@@ -104,7 +104,7 @@ def service_menu():
             notes = input("Notes: ")
             cost = float(input("Cost: "))
             log_service(service_type, notes, cost, vehicle_id)
-            print("✅ Service logged.")
+            print("Service logged.")
         elif choice == "2":
             break
 
