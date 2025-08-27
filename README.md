@@ -61,7 +61,7 @@ python main.py [command]
 - filter-vehicles – Search vehicles by make/model/year
 
 ## Author
-James Ivan
+By: James Ivan
 
 
 
