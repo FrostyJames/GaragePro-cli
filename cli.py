@@ -76,3 +76,17 @@ def update_vehicle_cmd(vehicle_id, make, model, year):
     else:
         click.secho("❌ Vehicle not found.", fg="red")
 
+@cli.command()
+@click.option('--service-id', prompt='Service ID', type=int)
+@click.option('--type', default=None)
+@click.option('--notes', default=None)
+@click.option('--cost', default=None, type=float)
+@click.option('--date', default=None)
+def update_service_cmd(service_id, type, notes, cost, date):
+    service = update_service(service_id, type, notes, cost, date)
+    if service:
+        click.secho("✅ Service record updated.", fg="green")
+    else:
+        click.secho("❌ Service record not found.", fg="red")
+
+
