@@ -48,3 +48,26 @@ def view_service_history(vehicle_id):
     session = SessionLocal()
     records = session.query(ServiceRecord).filter_by(vehicle_id=vehicle_id).all()
     return records
+
+def update_customer(customer_id, name=None, phone=None, email=None, address=None):
+    session = SessionLocal()
+    customer = session.get(Customer, customer_id)
+    if not customer:
+        return None
+    if name: customer.name = name
+    if phone: customer.phone_number = phone
+    if email: customer.email = email
+    if address: customer.address = address
+    session.commit()
+    return customer
+
+def update_vehicle(vehicle_id, make=None, model=None, year=None):
+    session = SessionLocal()
+    vehicle = session.get(Vehicle, vehicle_id)
+    if not vehicle:
+        return None
+    if make: vehicle.make = make
+    if model: vehicle.model = model
+    if year: vehicle.year = year
+    session.commit()
+    return vehicle
