@@ -6,6 +6,7 @@ Base = declarative_base()
 engine = create_engine("sqlite:///garagepro.db")
 SessionLocal = sessionmaker(bind=engine)
 
+
 class Customer(Base):
     __tablename__ = "customers"
     id = Column(Integer, primary_key=True)
@@ -14,6 +15,7 @@ class Customer(Base):
     email = Column(String)
     address = Column(String)
     vehicles = relationship("Vehicle", back_populates="customer")
+
 
 class Vehicle(Base):
     __tablename__ = "vehicles"
@@ -25,6 +27,7 @@ class Vehicle(Base):
     customer = relationship("Customer", back_populates="vehicles")
     services = relationship("ServiceRecord", back_populates="vehicle")
 
+
 class ServiceRecord(Base):
     __tablename__ = "services"
     id = Column(Integer, primary_key=True)
@@ -35,9 +38,10 @@ class ServiceRecord(Base):
     vehicle_id = Column(Integer, ForeignKey("vehicles.id"))
     vehicle = relationship("Vehicle", back_populates="services")
 
+
 Base.metadata.create_all(engine)
 
-# ------------------ CRUD FUNCTIONS ------------------
+
 
 def create_customer(name, phone, email, address):
     session = SessionLocal()
@@ -47,16 +51,22 @@ def create_customer(name, phone, email, address):
     session.close()
     return customer
 
+
 def update_customer(cid, name=None, phone=None, email=None, address=None):
     session = SessionLocal()
     customer = session.get(Customer, cid)
     if customer:
-        if name: customer.name = name
-        if phone: customer.phone = phone
-        if email: customer.email = email
-        if address: customer.address = address
+        if name:
+            customer.name = name
+        if phone:
+            customer.phone = phone
+        if email:
+            customer.email = email
+        if address:
+            customer.address = address
         session.commit()
     session.close()
+
 
 def delete_customer(cid):
     session = SessionLocal()
@@ -66,23 +76,30 @@ def delete_customer(cid):
         session.commit()
     session.close()
 
+
 def create_vehicle(make, model, year, customer_id):
     session = SessionLocal()
-    vehicle = Vehicle(make=make, model=model, year=year, customer_id=customer_id)
+    vehicle = Vehicle(make=make, model=model, year=year,
+                      customer_id=customer_id)
     session.add(vehicle)
     session.commit()
     session.close()
     return vehicle
 
+
 def update_vehicle(vid, make=None, model=None, year=None):
     session = SessionLocal()
     vehicle = session.get(Vehicle, vid)
     if vehicle:
-        if make: vehicle.make = make
-        if model: vehicle.model = model
-        if year: vehicle.year = year
+        if make:
+            vehicle.make = make
+        if model:
+            vehicle.model = model
+        if year:
+            vehicle.year = year
         session.commit()
     session.close()
+
 
 def delete_vehicle(vid):
     session = SessionLocal()
@@ -91,6 +108,7 @@ def delete_vehicle(vid):
         session.delete(vehicle)
         session.commit()
     session.close()
+
 
 def log_service(service_type, notes, cost, vehicle_id, service_date=None):
     session = SessionLocal()
@@ -106,13 +124,14 @@ def log_service(service_type, notes, cost, vehicle_id, service_date=None):
     session.close()
     return record
 
+
 def view_all_data():
     session = SessionLocal()
     customers = session.query(Customer).all()
     for c in customers:
         print(f"\n👤 {c.name} (ID: {c.id})")
         for v in c.vehicles:
-            print(f"  🚗 {v.make} {v.model} ({v.year}) - Vehicle ID: {v.id}")
+            print(f" {v.make} {v.model} ({v.year}) - Vehicle ID: {v.id}")
             for s in v.services:
-                print(f"    🛠️ {s.date} - {s.service_type} - KES {s.cost} - {s.notes}")
+                print(f"{s.date} - {s.service_type} - KES {s.cost} - {s.notes}")
     session.close()
