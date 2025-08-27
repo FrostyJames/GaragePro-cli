@@ -89,4 +89,23 @@ def update_service_cmd(service_id, type, notes, cost, date):
     else:
         click.secho("❌ Service record not found.", fg="red")
 
+from crud import delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id
+
+@cli.command()
+@click.option('--customer-id', prompt='Customer ID', type=int)
+def delete_customer(customer_id):
+    if delete_customer_by_id(customer_id):
+        click.secho("🗑️ Customer deleted.", fg="green")
+    else:
+        click.secho("❌ Customer not found.", fg="red")
+
+@cli.command()
+@click.option('--vehicle-id', prompt='Vehicle ID', type=int)
+def delete_vehicle(vehicle_id):
+    if delete_vehicle_by_id(vehicle_id):
+        click.secho("🗑️ Vehicle deleted.", fg="green")
+    else:
+        click.secho("❌ Vehicle not found.", fg="red")
+
+
 
