@@ -76,7 +76,7 @@ garagepro-cli/
 ## How to use
 
  ***- Run the CLI***
-     python main.py
+- python main.py
 
 ***Navigate through the commands***
 GaragePro CLI Main Menu
