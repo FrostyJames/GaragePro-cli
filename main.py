@@ -1,14 +1,28 @@
-import click
-from cli import customer_cli, vehicle_cli, service_cli
+from customer_menu import customer_menu
+from vehicle_menu import vehicle_menu
+from service_menu import service_menu
 
-@click.group()
-def main():
-    """GaragePro CLI - Main Menu"""
-    pass
+def main_menu():
+    while True:
+        print("\n🚗 GaragePro CLI Main Menu")
+        print("1. Customer Management")
+        print("2. Vehicle Management")
+        print("3. Service Records")
+        print("4. Exit")
 
-main.add_command(customer_cli)
-main.add_command(vehicle_cli)
-main.add_command(service_cli)
+        choice = input("Select an option: ")
+
+        if choice == "1":
+            customer_menu()
+        elif choice == "2":
+            vehicle_menu()
+        elif choice == "3":
+            service_menu()
+        elif choice == "4":
+            print("👋 Exiting GaragePro CLI. Goodbye!")
+            break
+        else:
+            print("❌ Invalid option. Please try again.")
 
 if __name__ == "__main__":
-    main()
+    main_menu()
