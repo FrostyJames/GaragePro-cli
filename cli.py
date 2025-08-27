@@ -3,8 +3,8 @@ from crud import (
     create_customer, create_vehicle, log_service,
     view_service_history, filter_vehicles,
     update_customer, update_vehicle, update_service,
-    delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id
-)
+    delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id)
+
 
 @click.group()
 def cli():
@@ -21,6 +21,7 @@ def add_customer(name, phone, email, address):
     customer = create_customer(name, phone, email, address)
     click.secho(f" Added customer: {customer.name}", fg="green")
 
+
 @cli.command()
 @click.option('--make', prompt='Vehicle make')
 @click.option('--model', prompt='Vehicle model')
@@ -28,7 +29,9 @@ def add_customer(name, phone, email, address):
 @click.option('--customer-id', prompt='Customer ID', type=int)
 def add_vehicle(make, model, year, customer_id):
     vehicle = create_vehicle(make, model, year, customer_id)
-    click.secho(f" Added vehicle: {vehicle.make} {vehicle.model} ({vehicle.year})", fg="green")
+    click.secho(
+        f" Added vehicle: {vehicle.make} {vehicle.model} ({vehicle.year})", fg="green")
+
 
 @cli.command(name="log-service")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
@@ -38,8 +41,8 @@ def add_vehicle(make, model, year, customer_id):
 @click.option('--date', default=None, help='Optional service date (YYYY-MM-DD)')
 def log_service_cmd(vehicle_id, service_type, notes, cost, date):
     service = log_service(service_type, notes, cost, vehicle_id, date)
-    click.secho(f"🛠️ Logged service: {service.service_type} on {service.date}", fg="green")
-
+    click.secho(
+        f"🛠️ Logged service: {service.service_type} on {service.date}", fg="green")
 
 
 @cli.command(name="view-history")
@@ -51,6 +54,7 @@ def view_history(vehicle_id):
         return
     for r in records:
         click.echo(f"{r.date} - {r.service_type} - KES {r.cost} - {r.notes}")
+
 
 @cli.command(name="filter-vehicles")
 @click.option('--make', default=None, help='Filter by vehicle make')
@@ -84,6 +88,7 @@ def update_customer_cmd(customer_id, name, phone, email, address):
     else:
         click.secho(" Customer not found.", fg="red")
 
+
 @cli.command(name="update-vehicle")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 @click.option('--make', default=None)
@@ -95,6 +100,7 @@ def update_vehicle_cmd(vehicle_id, make, model, year):
         click.secho(" Vehicle updated.", fg="green")
     else:
         click.secho(" Vehicle not found.", fg="red")
+
 
 @cli.command(name="update-service")
 @click.option('--service-id', prompt='Service ID', type=int)
@@ -118,6 +124,7 @@ def delete_customer(customer_id):
     else:
         click.secho(" Customer not found.", fg="red")
 
+
 @cli.command(name="delete-vehicle")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 def delete_vehicle(vehicle_id):
@@ -126,10 +133,11 @@ def delete_vehicle(vehicle_id):
     else:
         click.secho(" Vehicle not found.", fg="red")
 
+
 @cli.command(name="delete-service")
 @click.option('--service-id', prompt='Service ID', type=int)
 def delete_service(service_id):
     if delete_service_by_id(service_id):
-        click.secho(" Service record deleted.", fg="green")
+        click.secho("Service record deleted.", fg="green")
     else:
         click.secho(" Service record not found.", fg="red")
