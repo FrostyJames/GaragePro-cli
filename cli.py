@@ -64,3 +64,15 @@ def update_customer_cmd(customer_id, name, phone, email, address):
         click.secho("✅ Customer updated.", fg="green")
     else:
         click.secho("❌ Customer not found.", fg="red")
+@cli.command()
+@click.option('--vehicle-id', prompt='Vehicle ID', type=int)
+@click.option('--make', default=None)
+@click.option('--model', default=None)
+@click.option('--year', default=None, type=int)
+def update_vehicle_cmd(vehicle_id, make, model, year):
+    vehicle = update_vehicle(vehicle_id, make, model, year)
+    if vehicle:
+        click.secho("✅ Vehicle updated.", fg="green")
+    else:
+        click.secho("❌ Vehicle not found.", fg="red")
+
