@@ -3,6 +3,7 @@ from models import Customer, Vehicle, ServiceRecord
 from datetime import date
 
 
+
 def create_customer(name, phone, email, address):
     with SessionLocal() as session:
         customer = Customer(
@@ -43,14 +44,25 @@ def log_service(service_type, notes, cost, vehicle_id, service_date=None):
         session.refresh(service)
         return service
 
-# ------------------ READ ------------------
 
 def view_service_history(vehicle_id):
     with SessionLocal() as session:
         records = session.query(ServiceRecord).filter_by(vehicle_id=vehicle_id).all()
         return records
 
-# ------------------ UPDATE ------------------
+
+def filter_vehicles(make=None, model=None, year=None):
+    with SessionLocal() as session:
+        query = session.query(Vehicle, Customer).join(Customer)
+        if make:
+            query = query.filter(Vehicle.make.ilike(f"%{make}%"))
+        if model:
+            query = query.filter(Vehicle.model.ilike(f"%{model}%"))
+        if year:
+            query = query.filter(Vehicle.year == year)
+        return query.all()
+
+
 
 def update_customer(customer_id, name=None, phone=None, email=None, address=None):
     with SessionLocal() as session:
