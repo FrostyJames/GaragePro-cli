@@ -83,3 +83,13 @@ def update_service(service_id, service_type=None, notes=None, cost=None, date=No
     session.commit()
     return service
 
+def delete_customer_by_id(customer_id):
+    session = SessionLocal()
+    customer = session.get(Customer, customer_id)
+    if customer:
+        session.delete(customer)
+        session.commit()
+        return True
+    return False
+
+
