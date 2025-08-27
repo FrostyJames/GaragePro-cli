@@ -37,3 +37,15 @@ from crud import log_service
 def log_service_cmd(vehicle_id, service_type, notes, cost, date):
     service = log_service(service_type, notes, cost, vehicle_id, date)
     click.secho(f"🛠️ Logged service: {service.service_type} on {service.date}", fg="green")
+
+from crud import view_service_history
+
+@cli.command()
+@click.option('--vehicle-id', prompt='Vehicle ID', type=int)
+def view_history(vehicle_id):
+    records = view_service_history(vehicle_id)
+    if not records:
+        click.secho("No service records found.", fg="yellow")
+        return
+    for r in records:
+        click.echo(f"{r.date} - {r.service_type} - KES {r.cost} - {r.notes}")
