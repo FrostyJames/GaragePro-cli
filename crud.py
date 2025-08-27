@@ -43,3 +43,8 @@ def log_service(service_type, notes, cost, vehicle_id, service_date=None):
     session.add(service)
     session.commit()
     return service
+
+def view_service_history(vehicle_id):
+    session = SessionLocal()
+    records = session.query(ServiceRecord).filter_by(vehicle_id=vehicle_id).all()
+    return records
