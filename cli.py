@@ -49,3 +49,18 @@ def view_history(vehicle_id):
         return
     for r in records:
         click.echo(f"{r.date} - {r.service_type} - KES {r.cost} - {r.notes}")
+
+from crud import update_customer, update_vehicle, update_service
+
+@cli.command()
+@click.option('--customer-id', prompt='Customer ID', type=int)
+@click.option('--name', default=None)
+@click.option('--phone', default=None)
+@click.option('--email', default=None)
+@click.option('--address', default=None)
+def update_customer_cmd(customer_id, name, phone, email, address):
+    customer = update_customer(customer_id, name, phone, email, address)
+    if customer:
+        click.secho("✅ Customer updated.", fg="green")
+    else:
+        click.secho("❌ Customer not found.", fg="red")
