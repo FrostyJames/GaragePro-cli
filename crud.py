@@ -135,3 +135,18 @@ def view_all_data():
             for s in v.services:
                 print(f"{s.date} - {s.service_type} - KES {s.cost} - {s.notes}")
     session.close()
+
+def search_vehicles(make=None, model=None, year=None):
+    session = SessionLocal()
+    query = session.query(Vehicle).join(Customer)
+
+    if make:
+        query = query.filter(Vehicle.make.ilike(f"%{make}%"))
+    if model:
+        query = query.filter(Vehicle.model.ilike(f"%{model}%"))
+    if year:
+        query = query.filter(Vehicle.year == year)
+
+    results = query.all()
+    session.close()
+    return results
