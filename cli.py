@@ -1,15 +1,15 @@
 import click
 from crud import (
     create_customer, create_vehicle, log_service,
-    view_service_history,
+    view_service_history, filter_vehicles,
     update_customer, update_vehicle, update_service,
-    delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id)
+    delete_customer_by_id, delete_vehicle_by_id, delete_service_by_id
+)
 
 @click.group()
 def cli():
     """GaragePro CLI - Manage customers, vehicles, and service records."""
     pass
-
 
 
 @cli.command()
@@ -41,6 +41,7 @@ def log_service_cmd(vehicle_id, service_type, notes, cost, date):
     click.secho(f"🛠️ Logged service: {service.service_type} on {service.date}", fg="green")
 
 
+
 @cli.command(name="view-history")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 def view_history(vehicle_id):
@@ -51,6 +52,23 @@ def view_history(vehicle_id):
     for r in records:
         click.echo(f"{r.date} - {r.service_type} - KES {r.cost} - {r.notes}")
 
+@cli.command(name="filter-vehicles")
+@click.option('--make', default=None, help='Filter by vehicle make')
+@click.option('--model', default=None, help='Filter by vehicle model')
+@click.option('--year', default=None, type=int, help='Filter by manufacture year')
+def filter_vehicles_cmd(make, model, year):
+    """Filter vehicles by make, model, or year."""
+    results = filter_vehicles(make, model, year)
+
+    if not results:
+        click.secho("❌ No matching vehicles found.", fg="yellow")
+        return
+
+    click.secho("🔍 Matching Vehicles:", fg="cyan")
+    for vehicle, customer in results:
+        click.echo(
+            f"- ID: {vehicle.id} | {vehicle.make} {vehicle.model} ({vehicle.year}) | Owner: {customer.name}"
+        )
 
 
 @cli.command(name="update-customer")
@@ -90,6 +108,7 @@ def update_service_cmd(service_id, type, notes, cost, date):
         click.secho("✅ Service record updated.", fg="green")
     else:
         click.secho("❌ Service record not found.", fg="red")
+
 
 @cli.command(name="delete-customer")
 @click.option('--customer-id', prompt='Customer ID', type=int)
