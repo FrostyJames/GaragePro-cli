@@ -19,7 +19,7 @@ def cli():
 @click.option('--address', prompt='Address')
 def add_customer(name, phone, email, address):
     customer = create_customer(name, phone, email, address)
-    click.secho(f"✅ Added customer: {customer.name}", fg="green")
+    click.secho(f" Added customer: {customer.name}", fg="green")
 
 @cli.command()
 @click.option('--make', prompt='Vehicle make')
@@ -28,7 +28,7 @@ def add_customer(name, phone, email, address):
 @click.option('--customer-id', prompt='Customer ID', type=int)
 def add_vehicle(make, model, year, customer_id):
     vehicle = create_vehicle(make, model, year, customer_id)
-    click.secho(f"🚗 Added vehicle: {vehicle.make} {vehicle.model} ({vehicle.year})", fg="green")
+    click.secho(f" Added vehicle: {vehicle.make} {vehicle.model} ({vehicle.year})", fg="green")
 
 @cli.command(name="log-service")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
@@ -61,7 +61,7 @@ def filter_vehicles_cmd(make, model, year):
     results = filter_vehicles(make, model, year)
 
     if not results:
-        click.secho("❌ No matching vehicles found.", fg="yellow")
+        click.secho(" No matching vehicles found.", fg="yellow")
         return
 
     click.secho("🔍 Matching Vehicles:", fg="cyan")
@@ -80,9 +80,9 @@ def filter_vehicles_cmd(make, model, year):
 def update_customer_cmd(customer_id, name, phone, email, address):
     customer = update_customer(customer_id, name, phone, email, address)
     if customer:
-        click.secho("✅ Customer updated.", fg="green")
+        click.secho("Customer updated.", fg="green")
     else:
-        click.secho("❌ Customer not found.", fg="red")
+        click.secho(" Customer not found.", fg="red")
 
 @cli.command(name="update-vehicle")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
@@ -92,9 +92,9 @@ def update_customer_cmd(customer_id, name, phone, email, address):
 def update_vehicle_cmd(vehicle_id, make, model, year):
     vehicle = update_vehicle(vehicle_id, make, model, year)
     if vehicle:
-        click.secho("✅ Vehicle updated.", fg="green")
+        click.secho(" Vehicle updated.", fg="green")
     else:
-        click.secho("❌ Vehicle not found.", fg="red")
+        click.secho(" Vehicle not found.", fg="red")
 
 @cli.command(name="update-service")
 @click.option('--service-id', prompt='Service ID', type=int)
@@ -105,31 +105,31 @@ def update_vehicle_cmd(vehicle_id, make, model, year):
 def update_service_cmd(service_id, type, notes, cost, date):
     service = update_service(service_id, type, notes, cost, date)
     if service:
-        click.secho("✅ Service record updated.", fg="green")
+        click.secho("Service record updated.", fg="green")
     else:
-        click.secho("❌ Service record not found.", fg="red")
+        click.secho(" Service record not found.", fg="red")
 
 
 @cli.command(name="delete-customer")
 @click.option('--customer-id', prompt='Customer ID', type=int)
 def delete_customer(customer_id):
     if delete_customer_by_id(customer_id):
-        click.secho("🗑️ Customer deleted.", fg="green")
+        click.secho(" Customer deleted.", fg="green")
     else:
-        click.secho("❌ Customer not found.", fg="red")
+        click.secho(" Customer not found.", fg="red")
 
 @cli.command(name="delete-vehicle")
 @click.option('--vehicle-id', prompt='Vehicle ID', type=int)
 def delete_vehicle(vehicle_id):
     if delete_vehicle_by_id(vehicle_id):
-        click.secho("🗑️ Vehicle deleted.", fg="green")
+        click.secho(" Vehicle deleted.", fg="green")
     else:
-        click.secho("❌ Vehicle not found.", fg="red")
+        click.secho(" Vehicle not found.", fg="red")
 
 @cli.command(name="delete-service")
 @click.option('--service-id', prompt='Service ID', type=int)
 def delete_service(service_id):
     if delete_service_by_id(service_id):
-        click.secho("🗑️ Service record deleted.", fg="green")
+        click.secho(" Service record deleted.", fg="green")
     else:
-        click.secho("❌ Service record not found.", fg="red")
+        click.secho(" Service record not found.", fg="red")
