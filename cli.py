@@ -25,3 +25,15 @@ from crud import create_vehicle
 def add_vehicle(make, model, year, customer_id):
     vehicle = create_vehicle(make, model, year, customer_id)
     click.secho(f"🚗 Added vehicle: {vehicle.make} {vehicle.model} ({vehicle.year})", fg="green")
+
+from crud import log_service
+
+@cli.command()
+@click.option('--vehicle-id', prompt='Vehicle ID', type=int)
+@click.option('--service-type', prompt='Service type')
+@click.option('--notes', prompt='Service notes')
+@click.option('--cost', prompt='Service cost', type=float)
+@click.option('--date', default=None, help='Optional service date (YYYY-MM-DD)')
+def log_service_cmd(vehicle_id, service_type, notes, cost, date):
+    service = log_service(service_type, notes, cost, vehicle_id, date)
+    click.secho(f"🛠️ Logged service: {service.service_type} on {service.date}", fg="green")
