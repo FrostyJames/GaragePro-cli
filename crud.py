@@ -27,3 +27,19 @@ def create_vehicle(make, model, year, customer_id):
     session.add(vehicle)
     session.commit()
     return vehicle
+
+from models import ServiceRecord
+from datetime import date
+
+def log_service(service_type, notes, cost, vehicle_id, service_date=None):
+    session = SessionLocal()
+    service = ServiceRecord(
+        service_type=service_type,
+        notes=notes,
+        cost=cost,
+        vehicle_id=vehicle_id,
+        date=service_date or date.today()
+    )
+    session.add(service)
+    session.commit()
+    return service
