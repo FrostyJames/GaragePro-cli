@@ -1,132 +1,118 @@
-from database import SessionLocal
-from models import Customer, Vehicle, ServiceRecord
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import date
 
+Base = declarative_base()
+engine = create_engine("sqlite:///garagepro.db")
+SessionLocal = sessionmaker(bind=engine)
 
+class Customer(Base):
+    __tablename__ = "customers"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    phone = Column(String)
+    email = Column(String)
+    address = Column(String)
+    vehicles = relationship("Vehicle", back_populates="customer")
+
+class Vehicle(Base):
+    __tablename__ = "vehicles"
+    id = Column(Integer, primary_key=True)
+    make = Column(String)
+    model = Column(String)
+    year = Column(Integer)
+    customer_id = Column(Integer, ForeignKey("customers.id"))
+    customer = relationship("Customer", back_populates="vehicles")
+    services = relationship("ServiceRecord", back_populates="vehicle")
+
+class ServiceRecord(Base):
+    __tablename__ = "services"
+    id = Column(Integer, primary_key=True)
+    service_type = Column(String)
+    notes = Column(String)
+    cost = Column(Float)
+    date = Column(Date, default=date.today)
+    vehicle_id = Column(Integer, ForeignKey("vehicles.id"))
+    vehicle = relationship("Vehicle", back_populates="services")
+
+Base.metadata.create_all(engine)
+
+# ------------------ CRUD FUNCTIONS ------------------
 
 def create_customer(name, phone, email, address):
-    with SessionLocal() as session:
-        customer = Customer(
-            name=name,
-            phone_number=phone,
-            email=email,
-            address=address
-        )
-        session.add(customer)
-        session.commit()
-        session.refresh(customer)
-        return customer
+    session = SessionLocal()
+    customer = Customer(name=name, phone=phone, email=email, address=address)
+    session.add(customer)
+    session.commit()
+    session.close()
+    return customer
 
-def create_vehicle(make, model, year, customer_id):
-    with SessionLocal() as session:
-        vehicle = Vehicle(
-            make=make,
-            model=model,
-            year=year,
-            customer_id=customer_id
-        )
-        session.add(vehicle)
-        session.commit()
-        session.refresh(vehicle)
-        return vehicle
-
-def log_service(service_type, notes, cost, vehicle_id, service_date=None):
-    with SessionLocal() as session:
-        service = ServiceRecord(
-            service_type=service_type,
-            notes=notes,
-            cost=cost,
-            vehicle_id=vehicle_id,
-            date=service_date or date.today()
-        )
-        session.add(service)
-        session.commit()
-        session.refresh(service)
-        return service
-
-
-def view_service_history(vehicle_id):
-    with SessionLocal() as session:
-        records = session.query(ServiceRecord).filter_by(vehicle_id=vehicle_id).all()
-        return records
-
-
-def filter_vehicles(make=None, model=None, year=None):
-    with SessionLocal() as session:
-        query = session.query(Vehicle, Customer).join(Customer)
-        if make:
-            query = query.filter(Vehicle.make.ilike(f"%{make}%"))
-        if model:
-            query = query.filter(Vehicle.model.ilike(f"%{model}%"))
-        if year:
-            query = query.filter(Vehicle.year == year)
-        return query.all()
-
-
-
-def update_customer(customer_id, name=None, phone=None, email=None, address=None):
-    with SessionLocal() as session:
-        customer = session.get(Customer, customer_id)
-        if not customer:
-            return None
+def update_customer(cid, name=None, phone=None, email=None, address=None):
+    session = SessionLocal()
+    customer = session.get(Customer, cid)
+    if customer:
         if name: customer.name = name
-        if phone: customer.phone_number = phone
+        if phone: customer.phone = phone
         if email: customer.email = email
         if address: customer.address = address
         session.commit()
-        session.refresh(customer)
-        return customer
+    session.close()
 
-def update_vehicle(vehicle_id, make=None, model=None, year=None):
-    with SessionLocal() as session:
-        vehicle = session.get(Vehicle, vehicle_id)
-        if not vehicle:
-            return None
+def delete_customer(cid):
+    session = SessionLocal()
+    customer = session.get(Customer, cid)
+    if customer:
+        session.delete(customer)
+        session.commit()
+    session.close()
+
+def create_vehicle(make, model, year, customer_id):
+    session = SessionLocal()
+    vehicle = Vehicle(make=make, model=model, year=year, customer_id=customer_id)
+    session.add(vehicle)
+    session.commit()
+    session.close()
+    return vehicle
+
+def update_vehicle(vid, make=None, model=None, year=None):
+    session = SessionLocal()
+    vehicle = session.get(Vehicle, vid)
+    if vehicle:
         if make: vehicle.make = make
         if model: vehicle.model = model
         if year: vehicle.year = year
         session.commit()
-        session.refresh(vehicle)
-        return vehicle
+    session.close()
 
-def update_service(service_id, service_type=None, notes=None, cost=None, date=None):
-    with SessionLocal() as session:
-        service = session.get(ServiceRecord, service_id)
-        if not service:
-            return None
-        if service_type: service.service_type = service_type
-        if notes: service.notes = notes
-        if cost: service.cost = cost
-        if date: service.date = date
+def delete_vehicle(vid):
+    session = SessionLocal()
+    vehicle = session.get(Vehicle, vid)
+    if vehicle:
+        session.delete(vehicle)
         session.commit()
-        session.refresh(service)
-        return service
+    session.close()
 
-# ------------------ DELETE ------------------
+def log_service(service_type, notes, cost, vehicle_id, service_date=None):
+    session = SessionLocal()
+    record = ServiceRecord(
+        service_type=service_type,
+        notes=notes,
+        cost=cost,
+        vehicle_id=vehicle_id,
+        date=service_date or date.today()
+    )
+    session.add(record)
+    session.commit()
+    session.close()
+    return record
 
-def delete_customer_by_id(customer_id):
-    with SessionLocal() as session:
-        customer = session.get(Customer, customer_id)
-        if customer:
-            session.delete(customer)
-            session.commit()
-            return True
-        return False
-
-def delete_vehicle_by_id(vehicle_id):
-    with SessionLocal() as session:
-        vehicle = session.get(Vehicle, vehicle_id)
-        if vehicle:
-            session.delete(vehicle)
-            session.commit()
-            return True
-        return False
-
-def delete_service_by_id(service_id):
-    with SessionLocal() as session:
-        service = session.get(ServiceRecord, service_id)
-        if service:
-            session.delete(service)
-            session.commit()
-            return True
-        return False
+def view_all_data():
+    session = SessionLocal()
+    customers = session.query(Customer).all()
+    for c in customers:
+        print(f"\n👤 {c.name} (ID: {c.id})")
+        for v in c.vehicles:
+            print(f"  🚗 {v.make} {v.model} ({v.year}) - Vehicle ID: {v.id}")
+            for s in v.services:
+                print(f"    🛠️ {s.date} - {s.service_type} - KES {s.cost} - {s.notes}")
+    session.close()
