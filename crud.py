@@ -71,3 +71,15 @@ def update_vehicle(vehicle_id, make=None, model=None, year=None):
     if year: vehicle.year = year
     session.commit()
     return vehicle
+def update_service(service_id, service_type=None, notes=None, cost=None, date=None):
+    session = SessionLocal()
+    service = session.get(ServiceRecord, service_id)
+    if not service:
+        return None
+    if service_type: service.service_type = service_type
+    if notes: service.notes = notes
+    if cost: service.cost = cost
+    if date: service.date = date
+    session.commit()
+    return service
+
