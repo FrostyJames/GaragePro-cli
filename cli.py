@@ -4,6 +4,7 @@ from crud import (
     log_service, view_all_data
 )
 
+
 def main_menu():
     while True:
         print("\nGaragePro CLI Main Menu")
@@ -29,9 +30,10 @@ def main_menu():
         else:
             print(" Invalid option.")
 
+
 def customer_menu():
     while True:
-        print("\n👤 Customer Management")
+        print("\n Customer Management")
         print("1. Add Customer")
         print("2. Update Customer")
         print("3. Delete Customer")
@@ -59,6 +61,7 @@ def customer_menu():
             print("Customer deleted.")
         elif choice == "4":
             break
+
 
 def vehicle_menu():
     while True:
@@ -91,6 +94,7 @@ def vehicle_menu():
         elif choice == "4":
             break
 
+
 def service_menu():
     while True:
         print("\n Service Records")
@@ -107,6 +111,7 @@ def service_menu():
             print("Service logged.")
         elif choice == "2":
             break
+
 
 if __name__ == "__main__":
     main_menu()
