@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Float, Date, Text
 from sqlalchemy.orm import relationship
 from database import Base
 
+
 class Customer(Base):
     __tablename__ = 'customers'
     id = Column(Integer, primary_key=True)
@@ -9,7 +10,9 @@ class Customer(Base):
     phone_number = Column(String)
     email = Column(String)
     address = Column(String)
-    vehicles = relationship("Vehicle", back_populates="customer", cascade="all, delete")
+    vehicles = relationship(
+        "Vehicle", back_populates="customer", cascade="all, delete")
+
 
 class Vehicle(Base):
     __tablename__ = 'vehicles'
@@ -19,7 +22,9 @@ class Vehicle(Base):
     year = Column(Integer)
     customer_id = Column(Integer, ForeignKey('customers.id'))
     customer = relationship("Customer", back_populates="vehicles")
-    service_records = relationship("ServiceRecord", back_populates="vehicle", cascade="all, delete")
+    service_records = relationship(
+        "ServiceRecord", back_populates="vehicle", cascade="all, delete")
+
 
 class ServiceRecord(Base):
     __tablename__ = 'service_records'
