@@ -149,3 +149,15 @@ def search_vehicles(make=None, model=None, year=None):
     results = query.all()
     session.close()
     return results
+
+def update_service(service_id, service_type=None, notes=None, cost=None, service_date=None):
+    session = SessionLocal()
+    service = session.get(ServiceRecord, service_id)
+    if service:
+        if service_type: service.service_type = service_type
+        if notes: service.notes = notes
+        if cost: service.cost = cost
+        if service_date: service.date = service_date
+        session.commit()
+    session.close()
+    return service
