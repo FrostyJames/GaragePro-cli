@@ -161,3 +161,11 @@ def update_service(service_id, service_type=None, notes=None, cost=None, service
         session.commit()
     session.close()
     return service
+
+def delete_service(service_id):
+    session = SessionLocal()
+    service = session.get(ServiceRecord, service_id)
+    if service:
+        session.delete(service)
+        session.commit()
+    session.close()
