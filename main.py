@@ -4,6 +4,7 @@ from crud import (
     log_service, view_all_data, search_vehicles
 )
 
+
 def main_menu():
     while True:
         print("\n GaragePro: Main Menu")
@@ -28,6 +29,7 @@ def main_menu():
             break
         else:
             print(" Invalid option. Please try again.")
+
 
 def customer_menu():
     while True:
@@ -59,6 +61,7 @@ def customer_menu():
             print(" Customer deleted.")
         elif choice == "4":
             break
+
 
 def vehicle_menu():
     while True:
@@ -101,9 +104,11 @@ def vehicle_menu():
             else:
                 print("\n Matching Vehicles:")
                 for v in vehicles:
-                    print(f"- ID: {v.id} | {v.make} {v.model} ({v.year}) | Owner ID: {v.customer_id}")
+                    print(
+                        f"- ID: {v.id} | {v.make} {v.model} ({v.year}) | Owner ID: {v.customer_id}")
         elif choice == "5":
             break
+
 
 def service_menu():
     while True:
@@ -121,6 +126,7 @@ def service_menu():
             print("Service logged.")
         elif choice == "2":
             break
+
 
 if __name__ == "__main__":
     main_menu()
