@@ -168,4 +168,7 @@ def delete_service(service_id):
     if service:
         session.delete(service)
         session.commit()
+        session.close()
+        return True
     session.close()
+    return False
