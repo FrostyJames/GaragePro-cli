@@ -6,6 +6,8 @@ Base = declarative_base()
 engine = create_engine("sqlite:///garagepro.db")
 SessionLocal = sessionmaker(bind=engine)
 
+Base.metadata.create_all(engine)
+
 
 class Customer(Base):
     __tablename__ = "customers"
@@ -37,10 +39,6 @@ class ServiceRecord(Base):
     date = Column(Date, default=date.today)
     vehicle_id = Column(Integer, ForeignKey("vehicles.id"))
     vehicle = relationship("Vehicle", back_populates="services")
-
-
-Base.metadata.create_all(engine)
-
 
 
 def create_customer(name, phone, email, address):
@@ -135,6 +133,7 @@ def view_all_data():
             for s in v.services:
                 print(f"{s.date} - {s.service_type} - KES {s.cost} - {s.notes}")
     session.close()
+
 
 def search_vehicles(make=None, model=None, year=None):
     session = SessionLocal()
