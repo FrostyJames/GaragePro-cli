@@ -25,7 +25,7 @@ def main_menu():
         elif choice == "4":
             service_menu()
         elif choice == "5":
-            print(" Goodbye! Thank you for using GaragePro.")
+            print("Thank you for using GaragePro.")
             break
         else:
             print(" Invalid option. Please try again.")
@@ -100,7 +100,7 @@ def vehicle_menu():
 
             vehicles = search_vehicles(make, model, year)
             if not vehicles:
-                print(" No matching vehicles found.")
+                print("No matching vehicles found.")
             else:
                 print("\n Matching Vehicles:")
                 for v in vehicles:
@@ -123,10 +123,9 @@ def service_menu():
             notes = input("Notes: ")
             cost = float(input("Cost: "))
             log_service(service_type, notes, cost, vehicle_id)
-            print("Service logged.")
+            print(" Service logged.")
         elif choice == "2":
             break
-
 
 if __name__ == "__main__":
     main_menu()
