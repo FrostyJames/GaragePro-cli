@@ -7,7 +7,7 @@ class Customer(Base):
     __tablename__ = 'customers'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    phone_number = Column(String)
+    phone = Column(String)
     email = Column(String)
     address = Column(String)
     vehicles = relationship(
