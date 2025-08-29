@@ -10,6 +10,7 @@ from models import Customer, Vehicle, ServiceRecord
 
 Base.metadata.create_all(bind=engine)
 
+
 def main_menu():
     while True:
         print("\nGaragePro CLI Main Menu")
@@ -35,6 +36,7 @@ def main_menu():
         else:
             print("Invalid option. Please try again.")
 
+
 def customer_menu():
     while True:
         print("\nCustomer Management")
@@ -54,7 +56,8 @@ def customer_menu():
         elif choice == "2":
             try:
                 cid = int(input("Customer ID: "))
-                name = input("New name (leave blank to keep current): ") or None
+                name = input(
+                    "New name (leave blank to keep current): ") or None
                 phone = input("New phone: ") or None
                 email = input("New email: ") or None
                 address = input("New address: ") or None
@@ -73,6 +76,7 @@ def customer_menu():
             break
         else:
             print("Invalid option.")
+
 
 def vehicle_menu():
     while True:
@@ -124,11 +128,13 @@ def vehicle_menu():
             else:
                 print("\nMatching Vehicles:")
                 for v in vehicles:
-                    print(f"- ID: {v.id} | {v.make} {v.model} ({v.year}) | Owner ID: {v.customer_id}")
+                    print(
+                        f"- ID: {v.id} | {v.make} {v.model} ({v.year}) | Owner ID: {v.customer_id}")
         elif choice == "5":
             break
         else:
             print("Invalid option.")
+
 
 def service_menu():
     while True:
@@ -146,11 +152,13 @@ def service_menu():
                 log_service(service_type, notes, cost, vehicle_id)
                 print("Service logged.")
             except ValueError:
-                print("Invalid input. Vehicle ID must be an integer and cost must be a number.")
+                print(
+                    "Invalid input. Vehicle ID must be an integer and cost must be a number.")
         elif choice == "2":
             break
         else:
             print("Invalid option.")
+
 
 if __name__ == "__main__":
     main_menu()
